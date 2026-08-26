@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webbserver-deployment
+  labels:
+    app: min-webbapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: min-webbapp
+  template:
+    metadata:
+      labels:
+        app: min-webbapp
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:alpine
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "<!DOCTYPE html>
+            <html>
+            <head>
+              <title>GitOps Demo</title>
+              <style>
+                body { font-family: system-ui, sans-serif; text-align: center; padding: 60px; background: #0f172a; color: #f8fafc; }
+                h1 { color: #38bdf8; font-size: 2.5rem; }
+                .card { background: #1e293b; border: 1px solid #334155; padding: 25px; border-radius: 12px; display: inline-block; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+                .pod-name { font-size: 1.8rem; font-weight: bold; color: #10b981; letter-spacing: 1px; }
+                p { font-size: 1.2rem; color: #94a3b8; }
+                .gitops-badge { background: #6366f1; color: white; padding: 6px 14px; border-radius: 20px; font-weight: bold; display: inline-block; margin-top: 15px; }
+              </style>
+            </head>
+            <body>
+              <h1>Styrt via ArgoCD GitOps! 🐙</h1>
+              <p>Denna pod rullades ut automatiskt från GitHub:</p>
+              <div class='card'>
+                <div class='pod-name'>$HOSTNAME</div>
+                <div class='gitops-badge'>Repo: Sirbobba/k8s-gitops</div>
+              </div>
+            </body>
+            </html>" > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'
+        ports:
+        - containerPort: 80
