@@ -11,6 +11,9 @@ spec:
     targetRevision: 28.0.10
     helm:
       values: |
+        global:
+          security:
+            allowInsecureImages: true
         architecture: standalone
         auth:
           enabled: false
