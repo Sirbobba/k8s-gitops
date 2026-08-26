@@ -20,7 +20,7 @@ spec:
         image:
           registry: docker.io
           repository: library/redis
-          tag: 7-alpine
+          tag: "7"
         master:
           persistence:
             size: 2Gi
