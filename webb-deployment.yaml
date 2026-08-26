@@ -5,7 +5,7 @@ metadata:
   labels:
     app: min-webbapp
 spec:
-  replicas: 3
+  replicas: 6
   selector:
     matchLabels:
       app: min-webbapp
@@ -35,7 +35,7 @@ spec:
             </head>
             <body>
               <h1>Styrt via ArgoCD GitOps! 🐙</h1>
-              <p>Denna pod rullades ut automatiskt från GitHub:</p>
+              <p>Release v2.0 - Levererad av Sirbobba! 🚀🎉</p>
               <div class='card'>
                 <div class='pod-name'>$HOSTNAME</div>
                 <div class='gitops-badge'>Repo: Sirbobba/k8s-gitops</div>
