@@ -22,6 +22,7 @@ spec:
           repository: library/redis
           tag: "7"
         master:
+          loadModules: false
           persistence:
             size: 2Gi
   destination:
