@@ -17,12 +17,14 @@ spec:
         architecture: standalone
         auth:
           enabled: false
+        commonConfiguration: |-
+          appendonly yes
+          save ""
         image:
           registry: docker.io
           repository: library/redis
           tag: "7"
         master:
-          loadModules: false
           persistence:
             size: 2Gi
   destination:
