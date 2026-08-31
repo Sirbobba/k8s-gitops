@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azimuth-db-ui
+  labels:
+    app: azimuth-db-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azimuth-db-ui
+  template:
+    metadata:
+      labels:
+        app: azimuth-db-ui
+      annotations:
+        org.opencontainers.image.project.name: "azimuth"
+    spec:
+      containers:
+      - name: cloudbeaver
+        image: dbeaver/cloudbeaver:latest
+        ports:
+        - containerPort: 8978
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azimuth-db-ui-service
+spec:
+  selector:
+    app: azimuth-db-ui
+  ports:
+  - protocol: TCP
+    port: 8978
+    targetPort: 8978
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: azimuth-db-ui-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: db.azimuth.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: azimuth-db-ui-service
+            port:
+              number: 8978

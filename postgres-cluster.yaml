@@ -1,0 +1,16 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: azimuth-db
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  inheritedMetadata:
+    annotations:
+      org.opencontainers.image.project.name: "azimuth"
+  storage:
+    size: 1Gi
+  bootstrap:
+    initdb:
+      database: azimuth_ai
+      owner: azimuth_user

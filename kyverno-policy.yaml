@@ -1,0 +1,30 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-azimuth-project-annotation
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: check-azimuth-annotation
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - kube-system
+          - kyverno
+          - cnpg-system
+          - local-path-storage
+          - argocd
+          - ingress-nginx
+    validate:
+      message: "⛔ SÄKERHETSFEL: Podden avvisades av Kyverno! Alla containers i Azimuth måste ha märkningen: org.opencontainers.image.project.name=azimuth"
+      pattern:
+        metadata:
+          annotations:
+            org.opencontainers.image.project.name: "azimuth"
