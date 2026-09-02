@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cloudbeaver-data
+  annotations:
+    org.opencontainers.image.project.name: "azimuth"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,6 +34,9 @@ spec:
         image: dbeaver/cloudbeaver:latest
         ports:
         - containerPort: 8978
+        volumeMounts:
+        - name: cb-storage
+          mountPath: /opt/cloudbeaver/workspace
         resources:
           requests:
             cpu: 100m
@@ -28,6 +44,10 @@ spec:
           limits:
             cpu: 500m
             memory: 512Mi
+      volumes:
+      - name: cb-storage
+        persistentVolumeClaim:
+          claimName: cloudbeaver-data
 ---
 apiVersion: v1
 kind: Service
